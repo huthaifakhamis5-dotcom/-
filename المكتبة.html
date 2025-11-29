@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>مكتبة المصطفى — الطباعة، المستلزمات والإكسسوارات</title>
+  <meta name="description" content="مكتبة المصطفى — طباعة، استنساخ، مستلزمات دراسية، إكسسوارات هواتف وهدايا. واجهة رقمية تفاعلية وسهلة الإدارة." />
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --primary:#0f4c81; --accent:#ff6b6b; --muted:#6b7280; --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Segoe UI', Tahoma, system-ui, sans-serif;
+      background:linear-gradient(180deg,var(--bg),#eef3f8);
+      color:#1f2937;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      direction:rtl;
+    }
+
+    /* Header / Logo */
+    header.site-header{
+      display:flex;align-items:center;justify-content:space-between;padding:18px 20px;background:linear-gradient(90deg,var(--primary),#1a73b8);color:white;
+      position:sticky;top:0;z-index:1000;backdrop-filter:saturate(120%) blur(6px);
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#ffd166,#ff6b6b);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:20px;box-shadow:0 6px 18px rgba(15,76,129,0.18)
+    }
+    .brand h1{margin:0;font-size:18px;letter-spacing:0.2px}
+    .brand p{margin:0;font-size:12px;opacity:0.9}
+
+    /* Main layout */
+    .container{max-width:1100px;margin:22px auto;padding:0 18px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+
+    /* Left: main area */
+    main.card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 8px 28px rgba(16,24,40,0.06)}
+    .hero{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+    .hero .intro{flex:1}
+    .intro h2{margin:0 0 6px;font-size:22px;color:var(--primary)}
+    .intro p{margin:0;color:var(--muted)}
+
+    /* Action buttons (rooms) */
+    .rooms{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .room-btn{background:linear-gradient(180deg,#fff,#f3f7fb);border:1px solid rgba(15,76,129,0.06);padding:12px 16px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:0 6px 18px rgba(12, 43, 90, 0.06);transition:transform .18s ease,box-shadow .18s ease}
+    .room-btn:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(12,43,90,0.1)}
+    .room-btn .dot{width:10px;height:10px;border-radius:50%;background:var(--primary)}
+
+    /* Rooms area (views) */
+    .view{display:none;margin-top:20px}
+    .view.active{display:block}
+    .view .room-header{display:flex;justify-content:space-between;align-items:center}
+    .view h3{margin:0;color:var(--primary)}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:14px}
+    .product{background:linear-gradient(180deg,#fff,#fbfdff);padding:12px;border-radius:12px;border:1px solid rgba(16,24,40,0.04);box-shadow:0 8px 20px rgba(12,43,90,0.04);display:flex;flex-direction:column;gap:8px}
+    .product .title{font-weight:600}
+    .product .price{color:var(--accent);font-weight:700}
+    .product .actions{margin-top:auto;display:flex;gap:8px}
+    .btn{padding:8px 10px;border-radius:8px;cursor:pointer;border:0;background:var(--primary);color:white;font-weight:600}
+    .btn.ghost{background:transparent;color:var(--primary);border:1px solid rgba(15,76,129,0.12)}
+
+    /* Right sidebar */
+    aside.sidebar{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,0.04);height:fit-content}
+    .socials{display:flex;flex-direction:column;gap:10px}
+    .socials a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;text-decoration:none;color:var(--primary);border:1px dashed rgba(15,76,129,0.08)}
+
+    /* Settings / admin */
+    .settings{margin-top:14px}
+    .settings input, .settings textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6edf6;background:#fbfeff}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Top nav for mobile */
+    .top-actions{display:flex;gap:10px;align-items:center}
+
+    /* Floating back button */
+    .back-btn{position:fixed;left:18px;bottom:18px;background:var(--primary);color:white;padding:12px 14px;border-radius:12px;box-shadow:0 12px 28px rgba(12,43,90,0.16);z-index:1001;border:0;cursor:pointer}
+
+    /* Nice micro interactions (ripple) */
+    .ripple{position:relative;overflow:hidden}
+    .ripple:after{content:"";position:absolute;width:20px;height:20px;border-radius:50%;transform:scale(0);opacity:0.5;background:rgba(255,255,255,0.35);left:50%;top:50%;pointer-events:none;transition:transform .6s ease,opacity .8s ease}
+    .ripple:active:after{transform:scale(20);opacity:0}
+
+    footer{max-width:1100px;margin:24px auto 80px;padding:18px;font-size:14px;color:var(--muted);text-align:center}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      aside.sidebar{order:2}
+    }
+    @media (max-width:520px){.brand h1{font-size:16px}.logo{width:46px;height:46px}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <div class="logo">م</div>
+      <div>
+        <h1>مكتبة المصطفى</h1>
+        <p>طباعة • استنساخ • مستلزمات • إكسسوارات • هدايا</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="openSettings" class="btn ghost ripple">🔧 إعدادات</button>
+      <a id="whatsLink" class="btn ripple" target="_blank" href="https://wa.me/07700000000">💬 واتساب</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <main class="card">
+        <section class="hero">
+          <div class="intro">
+            <h2>أهلاً بك في مكتبة المصطفى — خلك مرتاح واحنا نهتم بالطباعة</h2>
+            <p>تصفح الأقسام "الغرف" المتوفّرة للدخول إلى كل مساحة خاصة تضيف فيها منتجاتك وتتحكم بالمحتوى بسهولة. التصميم تفاعلي وممتع.</p>
+
+            <div class="rooms" aria-hidden="false">
+              <button class="room-btn ripple" data-room="printing"> <span class="dot" style="background:#ff6b6b"></span> غرفة الطباعة</button>
+              <button class="room-btn ripple" data-room="stationery"> <span class="dot" style="background:#f59e0b"></span> غرفة المستلزمات</button>
+              <button class="room-btn ripple" data-room="phones"> <span class="dot" style="background:#00a8ff"></span> غرفة إكسسوارات الهواتف</button>
+              <button class="room-btn ripple" data-room="gifts"> <span class="dot" style="background:#8b5cf6"></span> غرفة الهدايا</button>
+            </div>
+          </div>
+
+          <div style="min-width:220px;display:flex;align-items:center;justify-content:center">
+            <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="مكتبة" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 10px 30px rgba(16,24,40,0.08)">
+          </div>
+        </section>
+
+        <!-- Views / Rooms -->
+        <section id="views">
+
+          <article id="home" class="view active">
+            <h3>الصفحة الرئيسية</h3>
+            <p class="small">اضغط على أي زر (غرفة) للدخول إلى المساحة الخاصة بها حيث تستطيع إضافة / تعديل المنتجات بنفسك.</p>
+            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn ripple" onclick="openRoom('printing')">اذهب إلى غرفة الطباعة</button>
+              <button class="btn ghost ripple" onclick="openRoom('stationery')">اذهب إلى غرفة المستلزمات</button>
+            </div>
+          </article>
+
+          <article id="printing" class="view">
+            <div class="room-header">
+              <h3>غرفة الطباعة — إدارة المنتجات</h3>
+              <div>
+                <button class="btn ghost" onclick="showAddForm('printing')">+ إضافة منتج</button>
+                <button class="btn" onclick="backHome()">🏠 رجوع</button>
+              </div>
+            </div>
+            <div class="products" id="list-printing"></div>
+          </article>
+
+          <article id="stationery" class="view">
+            <div class="room-header">
+              <h3>غرفة المستلزمات</h3>
+              <div>
+                <button class="btn ghost" onclick="showAddForm('stationery')">+ إضافة منتج</button>
+                <button class="btn" onclick="backHome()">🏠 رجوع</button>
+              </div>
+            </div>
+            <div class="products" id="list-stationery"></div>
+          </article>
+
+          <article id="phones" class="view">
+            <div class="room-header">
+              <h3>غرفة إكسسوارات الهواتف</h3>
+              <div>
+                <button class="btn ghost" onclick="showAddForm('phones')">+ إضافة منتج</button>
+                <button class="btn" onclick="backHome()">🏠 رجوع</button>
+              </div>
+            </div>
+            <div class="products" id="list-phones"></div>
+          </article>
+
+          <article id="gifts" class="view">
+            <div class="room-header">
+              <h3>غرفة الهدايا</h3>
+              <div>
+                <button class="btn ghost" onclick="showAddForm('gifts')">+ إضافة منتج</button>
+                <button class="btn" onclick="backHome()">🏠 رجوع</button>
+              </div>
+            </div>
+            <div class="products" id="list-gifts"></div>
+          </article>
+
+        </section>
+
+        <!-- Add Product Modal (simple) -->
+        <div id="addModal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,15,30,0.4);z-index:2000">
+          <form id="addForm" style="background:var(--card);padding:18px;border-radius:12px;width:92%;max-width:540px;box-shadow:0 18px 48px rgba(12,43,90,0.18)">
+            <h3 id="modalTitle">إضافة منتج</h3>
+            <label class="small">اسم المنتج</label>
+            <input name="title" required />
+            <label class="small">وصف (اختياري)</label>
+            <textarea name="desc" rows="3"></textarea>
+            <label class="small">السعر (اختياري)</label>
+            <input name="price" />
+            <label class="small">رابط صورة (اختياري)</label>
+            <input name="img" placeholder="رابط صورة أو اتركه فارغ" />
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+              <button type="button" class="btn ghost" onclick="closeModal()">إلغاء</button>
+              <button type="submit" class="btn">حفظ</button>
+            </div>
+          </form>
+        </div>
+
+      </main>
+
+      <aside class="sidebar">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#ffd166,#ff6b6b);display:flex;align-items:center;justify-content:center;font-weight:700;color:white">م</div>
+          <div>
+            <div style="font-weight:700">مكتبة المصطفى</div>
+            <div class="small">أهلاً بك — تحكم سريع وروابط سوشال</div>
+          </div>
+        </div>
+
+        <div class="socials">
+          <a id="fbLink" href="#" target="_blank">📘 فيسبوك — <span class="small">أضف رابط الحساب</span></a>
+          <a id="igLink" href="#" target="_blank">📸 إنستجرام — <span class="small">أضف رابط الحساب</span></a>
+          <a id="tgLink" href="#" target="_blank">✳️ تلغرام — <span class="small">أضف رابط الحساب</span></a>
+          <a id="waLink" href="#" target="_blank">💬 واتساب — <span class="small">أضف رقم</span></a>
+        </div>
+
+        <div class="settings">
+          <h4 style="margin:12px 0 8px">إعدادات سريعة</h4>
+          <label class="small">رابط فيسبوك</label>
+          <input id="inpFb" placeholder="https://facebook.com/yourpage" />
+          <label class="small">رابط إنستجرام</label>
+          <input id="inpIg" placeholder="https://instagram.com/yourpage" />
+          <label class="small">رابط تلغرام</label>
+          <input id="inpTg" placeholder="https://t.me/yourchannel" />
+          <label class="small">رقم واتساب (بصيغة دولية بدون +)</label>
+          <input id="inpWa" placeholder="7700000000" />
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn" id="saveSettings">حفظ الإعدادات</button>
+            <button class="btn ghost" id="resetData">إعادة ضبط</button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;font-size:13px;color:var(--muted)">نصيحة: كل ما تضيف منتجات أكثر هنا، سيظهر محتوى أغنى لزوار الغرف. هذه الواجهة تعمل محليًا (بدون سيرفر) وتخزن البيانات في متصفحك (localStorage).</div>
+
+      </aside>
+
+    </div>
+  </div>
+
+  <button class="back-btn ripple" style="display:none" id="backFloating">🏠 الرئيسية</button>
+
+  <footer>© 2025 مكتبة المصطفى — صمّمت لتجربة مريحة وممتعة • تعمل محليًا بدون حاجة لاستضافة فورياً</footer>
+
+  <script>
+    // --- Helpers ---
+    const qs = (s, el = document) => el.querySelector(s);
+    const qsa = (s, el = document) => Array.from(el.querySelectorAll(s));
+
+    // Rooms list
+    const rooms = ['printing','stationery','phones','gifts'];
+
+    // Load data from localStorage or initialize
+    function loadData(){
+      const raw = localStorage.getItem('maktaba_data');
+      if(!raw) {
+        const init = {printing:[],stationery:[],phones:[],gifts:[],links:{fb:'',ig:'',tg:'',wa:''}};
+        localStorage.setItem('maktaba_data',JSON.stringify(init));
+        return init;
+      }
+      try{return JSON.parse(raw);}catch(e){const init = {printing:[],stationery:[],phones:[],gifts:[],links:{fb:'',ig:'',tg:'',wa:''}};localStorage.setItem('maktaba_data',JSON.stringify(init));return init}
+    }
+    let data = loadData();
+
+    // Render lists
+    function renderProducts(){
+      rooms.forEach(r => {
+        const el = qs('#list-'+r);
+        el.innerHTML = '';
+        (data[r]||[]).forEach((p, idx)=>{
+          const card = document.createElement('div'); card.className='product';
+          card.innerHTML = `
+            ${p.img?`<img src="${p.img}" alt="${p.title}" style="width:100%;height:110px;object-fit:cover;border-radius:8px">`:''}
+            <div class="title">${escapeHtml(p.title||'بدون اسم')}</div>
+            <div class="small">${escapeHtml(p.desc||'')}</div>
+            <div class="price">${p.price?escapeHtml(p.price)+' IQD':''}</div>
+            <div class="actions">
+              <button class="btn ghost" onclick="editProduct('${r}',${idx})">تعديل</button>
+              <button class="btn" onclick="deleteProduct('${r}',${idx})">حذف</button>
+            </div>
+          `;
+          el.appendChild(card);
+        })
+      })
+    }
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // Show add/edit modal
+    let currentRoom = null; let editIndex = null;
+    function showAddForm(room, idx=null){ currentRoom = room; editIndex = idx; const modal = qs('#addModal'); const form = qs('#addForm'); qs('#modalTitle').textContent = idx==null? 'إضافة منتج':'تعديل المنتج'; if(idx!=null){const p = data[room][idx]; form.title.value = p.title; form.desc.value = p.desc; form.price.value = p.price; form.img.value = p.img;} else {form.reset();} modal.style.display='flex'; }
+    function closeModal(){qs('#addModal').style.display='none'; currentRoom=null; editIndex=null;}
+
+    // Save product
+    qs('#addForm').addEventListener('submit', function(e){e.preventDefault(); const f=new FormData(e.target); const obj={title:f.get('title'),desc:f.get('desc'),price:f.get('price'),img:f.get('img')}; if(editIndex==null){data[currentRoom].push(obj)} else {data[currentRoom][editIndex]=obj} localStorage.setItem('maktaba_data',JSON.stringify(data)); renderProducts(); closeModal();});
+
+    // Edit/Delete
+    function editProduct(room, idx){ showAddForm(room, idx); }
+    function deleteProduct(room, idx){ if(!confirm('متأكد تريد حذف المنتج؟')) return; data[room].splice(idx,1); localStorage.setItem('maktaba_data',JSON.stringify(data)); renderProducts(); }
+
+    // Navigation
+    function openRoom(id){ qsa('.view').forEach(v=>v.classList.remove('active')); qs('#'+id).classList.add('active'); qs('.back-btn').style.display='block'; document.getElementById('backFloating').style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); }
+    function backHome(){ qsa('.view').forEach(v=>v.classList.remove('active')); qs('#home').classList.add('active'); qs('.back-btn').style.display='none'; document.getElementById('backFloating').style.display='none'; }
+
+    // Buttons for room shortcuts
+    qsa('.room-btn').forEach(b=>b.addEventListener('click', ()=>openRoom(b.dataset.room)));
+    qs('#backFloating').addEventListener('click', backHome);
+
+    // Settings handling
+    qs('#saveSettings').addEventListener('click', ()=>{
+      data.links.fb=qs('#inpFb').value.trim(); data.links.ig=qs('#inpIg').value.trim(); data.links.tg=qs('#inpTg').value.trim(); data.links.wa=qs('#inpWa').value.trim(); localStorage.setItem('maktaba_data',JSON.stringify(data)); applyLinks(); alert('تم حفظ الإعدادات');
+    });
+    qs('#resetData').addEventListener('click', ()=>{ if(confirm('هل تريد إعادة ضبط كل البيانات (سيُحذف كل المنتجات)؟')){ localStorage.removeItem('maktaba_data'); data = loadData(); applyLinks(); renderProducts(); alert('تمت إعادة الضبط'); } });
+
+    // Apply social links to sidebar and buttons
+    function applyLinks(){ qs('#fbLink').href = data.links.fb || '#'; qs('#igLink').href = data.links.ig || '#'; qs('#tgLink').href = data.links.tg || '#'; qs('#waLink').href = data.links.wa? ('https://wa.me/'+data.links.wa): '#'; qs('#whatsLink').href = data.links.wa? ('https://wa.me/'+data.links.wa): 'https://wa.me/07700000000'; }
+
+    // Open settings modal via top button (scroll to sidebar settings)
+    qs('#openSettings').addEventListener('click', ()=>{ window.scrollTo({top:document.querySelector('.sidebar').offsetTop - 20, behavior:'smooth'}); qs('#inpFb').focus(); });
+
+    // Initialize values into inputs
+    function initInputs(){ qs('#inpFb').value = data.links.fb || ''; qs('#inpIg').value = data.links.ig || ''; qs('#inpTg').value = data.links.tg || ''; qs('#inpWa').value = data.links.wa || ''; }
+
+    // Initialize
+    renderProducts(); applyLinks(); initInputs();
+
+    // Close modal on background click
+    qs('#addModal').addEventListener('click', (e)=>{ if(e.target===qs('#addModal')) closeModal(); });
+
+    // Small keyboard shortcut: N to add product in current room
+    document.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='n' && document.querySelector('.view.active') && document.querySelector('.view.active').id!=='home'){ showAddForm(document.querySelector('.view.active').id); } });
+
+  </script>
+</body>
+</html>
